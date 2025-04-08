@@ -12,24 +12,24 @@ A sleek and responsive Weather Dashboard that allows users to get real-time weat
 
 ## 🚀 Features
 
-- 🌤️ Real-time weather data (temperature, humidity, wind speed, weather condition)
-- 🌡️ 5-day forecast integration (WIP)
-- 🔄 Refresh weather button
-- 🔍 Search by city name
-- 🕒 Search history (stored in local storage)
-- 🌙 Dark and ☀️ Light theme toggle
-- ⚡ Smooth animations with Framer Motion
-- 📱 Responsive design (mobile-first)
+- Real-time weather data (temperature, humidity, wind speed, weather condition)
+- 5-day forecast integration (WIP)
+- Refresh weather button
+- Search by city name
+- Search history (stored in local storage)
+- Dark and ☀️ Light theme toggle
+- Smooth animations with Framer Motion
+- Responsive design (mobile-first)
 
 ---
 
 ## 🧪 Tech Stack
 
-- ⚛️ **React** with Vite
-- 🎨 **Tailwind CSS** for modern UI
-- 🌀 **Framer Motion** for animation
-- ☁️ **OpenWeatherMap API**
-- 💡 **LocalStorage** for search history and theme persistence
+- **React** with Vite
+- **Tailwind CSS (V4)**  for modern UI
+- **Framer Motion** for animation
+- **OpenWeatherMap API**
+- **LocalStorage** for search history and theme persistence
 
 ---
 
