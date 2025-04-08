@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import WeatherCard from "./components/WeatherCard";
+import ForecastCard from "./components/ForecastCard";
 import { motion } from "framer-motion";
 
 function App() {
@@ -21,8 +22,7 @@ function App() {
       document.documentElement.classList.remove("dark");
     }
   }, [dark]);
-  
-  
+
   // Here I am using localhost to get the local history
   useEffect(() => {
     localStorage.setItem("weatherHistory", JSON.stringify(searchHistory));
@@ -35,8 +35,10 @@ function App() {
     setError("");
 
     try {
-      //Here i am Fetching API 
-      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
+      //Here i am Fetching API
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`
+      );
       const data = await res.json();
 
       if (data.cod !== 200) {
@@ -45,7 +47,9 @@ function App() {
         setApiData(data);
         console.log(data); // Console log the api data which fetched to see output to fix my errors
         if (!searchHistory.includes(cityName)) {
-          setSearchHistory(prev => [cityName, ...prev.filter(c => c !== cityName)].slice(0, 5));
+          setSearchHistory((prev) =>
+            [cityName, ...prev.filter((c) => c !== cityName)].slice(0, 5)
+          );
         }
         fetchForecast(cityName);
       }
@@ -58,7 +62,9 @@ function App() {
 
   const fetchForecast = async (cityName) => {
     try {
-      const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`);
+      const res =
+        await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric
+`);
       const data = await res.json();
       setForecastData(data);
     } catch {
@@ -73,15 +79,41 @@ function App() {
     }
   };
 
+  const getDailyForecast = () => {
+    if (!forecastData || !forecastData.list) return [];
+
+    const dailyData = forecastData.list.filter((item) =>
+      item.dt_txt.includes("12:00:00")
+    );
+
+    return dailyData.map((item) => ({
+      date: new Date(item.dt_txt).toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      }),
+      temp: Math.round(item.main.temp),
+      weather: item.weather[0].main,
+      icon: item.weather[0].icon,
+    }));
+  };
+
   return (
     <div className={dark ? "dark w-full" : "w-full"}>
-      <button onClick={() => setDark(!dark)} className="absolute top-4 right-4 text-2xl text-white dark:text-yellow-300 dark:bg-gray-600 bg-orange-800 rounded-full p-2">
-          {dark ? "🌙" : "☀️"}
-        </button>
+      <button
+        onClick={() => setDark(!dark)}
+        className="absolute top-4 right-4 text-2xl text-white dark:text-yellow-300 dark:bg-gray-600 bg-orange-800 rounded-full p-2"
+      >
+        {dark ? "🌙" : "☀️"}
+      </button>
+
       <div className="min-h-screen bg-gradient-to-br from-yellow-300 via-orange-500 to-red-900 dark:from-gray-800 dark:via-gray-900 dark:to-black flex flex-col items-center justify-center px-4 py-8">
-        
+        <h5 className="text-xs font-thin mb-2 text-gray-900 dark:text-white self-baseline">
+          Submitted by :- Rupesh Kumar (22051720)
+        </h5>
+
         <div className="bg-white/20 dark:bg-white/10 backdrop-blur-sm p-8 sm:p-10 rounded-2xl shadow-lg w-full max-w-xl">
-          <h1 className="text-4xl sm:text-5xl font-bold font-mono text-white dark:text-gray-100 mb-6 text-center drop-shadow-md">
+          <h1 className="text-4xl sm:text-5xl font-bold font-mono text-gray-900 dark:text-gray-100 mb-6 text-center drop-shadow-md">
             Weather Dashboard
           </h1>
 
@@ -106,7 +138,9 @@ function App() {
 
           {searchHistory.length > 0 && (
             <div className="mt-6 text-white dark:text-gray-200 text-center">
-              <h2 className="font-semibold mb-2">Recent Searches:</h2>
+              <h2 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                Recent Searches:
+              </h2>
               <div className="flex gap-2 flex-wrap justify-center">
                 {searchHistory.map((city, idx) => (
                   <button
@@ -128,12 +162,12 @@ function App() {
           </div>
         )}
 
-       
         {
-        //  Here i am handling errors
-        error && (
-          <p className="text-red-600 font-semibold mt-4 text-xl">{error}</p>
-        )}
+          //  Here i am handling errors
+          error && (
+            <p className="text-red-600 font-semibold mt-4 text-xl">{error}</p>
+          )
+        }
 
         {apiData && (
           <motion.div
@@ -143,6 +177,8 @@ function App() {
             className="mt-6 w-full max-w-xl flex flex-col items-center justify-center"
           >
             <WeatherCard data={apiData} forecast={forecastData} />
+            {forecastData && <ForecastCard forecast={getDailyForecast()} />}
+
             <button
               onClick={() => fetchWeather(apiData.name)}
               className="bg-blue-600 dark:bg-green-600 rounded-lg self-center p-4 mt-5 outline-none font-semibold text-white"
