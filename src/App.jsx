@@ -100,22 +100,25 @@ function App() {
 
   return (
     <div className={dark ? "dark w-full" : "w-full"}>
+      
       <button
         onClick={() => setDark(!dark)}
         className="absolute top-4 right-4 text-2xl text-white dark:text-yellow-300 dark:bg-gray-600 bg-orange-800 rounded-full p-2"
       >
         {dark ? "🌙" : "☀️"}
       </button>
-
+      
       <div className="min-h-screen bg-gradient-to-br from-yellow-300 via-orange-500 to-red-900 dark:from-gray-800 dark:via-gray-900 dark:to-black flex flex-col items-center justify-center px-4 py-8">
-        <h5 className="text-xs font-thin mb-2 text-gray-900 dark:text-white self-baseline">
-          Submitted by :- Rupesh Kumar (22051720)
-        </h5>
+      <h5 className="text-xs dark:font-thin font-bold  mb-2 text-gray-600 dark:text-white self-baseline align-baseline">
+  Submitted by :- Rupesh Kumar (22051720)
+</h5>
+
 
         <div className="bg-white/20 dark:bg-white/10 backdrop-blur-sm p-8 sm:p-10 rounded-2xl shadow-lg w-full max-w-xl">
           <h1 className="text-4xl sm:text-5xl font-bold font-mono text-gray-900 dark:text-gray-100 mb-6 text-center drop-shadow-md">
             Weather Dashboard
           </h1>
+          
 
           <form
             onSubmit={handleSubmit}
@@ -138,9 +141,7 @@ function App() {
 
           {searchHistory.length > 0 && (
             <div className="mt-6 text-white dark:text-gray-200 text-center">
-              <h2 className="font-semibold mb-2 text-gray-900 dark:text-white">
-                Recent Searches:
-              </h2>
+              <h2 className="font-semibold mb-2 text-gray-900 dark:text-white">Recent Searches:</h2>
               <div className="flex gap-2 flex-wrap justify-center">
                 {searchHistory.map((city, idx) => (
                   <button
